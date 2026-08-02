@@ -29,6 +29,10 @@ public class InventoryManager {
         }
     }
 
+    private boolean isTracked(GameMode gm) {
+        return gm == GameMode.CREATIVE || gm == GameMode.SURVIVAL;
+    }
+
     public void loadPlayer(Player player) {
         UUID uuid = player.getUniqueId();
         File file = getPlayerFile(uuid);
@@ -37,6 +41,7 @@ public class InventoryManager {
         if (file.exists()) {
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             for (GameMode gm : GameMode.values()) {
+                if (!isTracked(gm)) continue;
                 String path = gm.name().toLowerCase();
                 ConfigurationSection section = config.getConfigurationSection(path);
                 if (section != null) {
@@ -47,7 +52,9 @@ public class InventoryManager {
         }
 
         for (GameMode gm : GameMode.values()) {
-            modeMap.putIfAbsent(gm, PlayerState.createDefault());
+            if (isTracked(gm)) {
+                modeMap.putIfAbsent(gm, PlayerState.createDefault());
+            }
         }
 
         playerData.put(uuid, modeMap);
@@ -63,7 +70,9 @@ public class InventoryManager {
         File file = getPlayerFile(uuid);
         YamlConfiguration config = new YamlConfiguration();
         for (Map.Entry<GameMode, PlayerState> entry : modeMap.entrySet()) {
-            String path = entry.getKey().name().toLowerCase();
+            GameMode gm = entry.getKey();
+            if (!isTracked(gm)) continue;
+            String path = gm.name().toLowerCase();
             ConfigurationSection section = config.createSection(path);
             entry.getValue().serialize(section);
         }
@@ -87,6 +96,7 @@ public class InventoryManager {
 
     public void captureCurrentState(Player player) {
         GameMode gm = player.getGameMode();
+        if (!isTracked(gm)) return;
         PlayerState state = PlayerState.fromPlayer(player);
         setState(player, gm, state);
     }
@@ -109,10 +119,11 @@ public class InventoryManager {
         state.applyToPlayer(player);
     }
 
-
     public void switchGamemode(Player player, GameMode newGm) {
         captureCurrentState(player);
-        applyState(player, newGm);
+        if (isTracked(newGm)) {
+            applyState(player, newGm);
+        }
     }
 
     private File getPlayerFile(UUID uuid) {

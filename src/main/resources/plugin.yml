@@ -1,0 +1,34 @@
+name: GameModeManager
+version: 1.0.0
+main: com.chalwk.GameModeManager
+api-version: 1.21
+description: Manage separate inventories per gamemode with world-based auto-switching
+author: Chalwk
+website: https://github.com/Chalwk
+
+commands:
+  gmmanage:
+    description: Manage GameModeManager settings
+    usage: /<command> [reload|status]
+    permission: gmmanage.use
+    aliases: [ gmm ]
+
+permissions:
+  gmmanage.*:
+    description: All GameModeManager permissions
+    children:
+      gmmanage.use: true
+      gmmanage.reload: true
+      gmmanage.bypass.restrictions: true
+
+  gmmanage.use:
+    description: Allows using the /gmmanage command
+    default: op
+
+  gmmanage.reload:
+    description: Allows reloading the configuration
+    default: op
+
+  gmmanage.bypass.restrictions:
+    description: Bypass all action restrictions (block place, break, drop)
+    default: op

@@ -1,0 +1,144 @@
+# Auto-switch gamemode when changing worlds?
+# This is ONLY supposed to switch them to survival (if they were in creative).
+auto_switch_worlds: true
+
+# Map world names to the gamemode the player should be set to upon entering
+# Valid values: SURVIVAL, CREATIVE, ADVENTURE, SPECTATOR
+world_gamemodes:
+  spawn: SURVIVAL
+  world: SURVIVAL
+  world_nether: SURVIVAL
+  world_the_end: SURVIVAL
+
+# Restrictions while in CREATIVE mode (only applies if player does NOT have bypass permission)
+restrictions:
+  creative:
+    block_place: false
+    block_break: false
+    item_drop: false
+    item_pickup: false
+
+    # Blocks that are BOTH place AND break-restricted while in CREATIVE mode.
+    block_restrictions:
+      - ARMOR_STAND
+      - AXOLOTL_SPAWN_EGG
+      - BAT_SPAWN_EGG
+      - BEDROCK
+      - BEE_SPAWN_EGG
+      - BLAZE_SPAWN_EGG
+      - CAT_SPAWN_EGG
+      - CAVE_SPIDER_SPAWN_EGG
+      - CHICKEN_SPAWN_EGG
+      - COD_SPAWN_EGG
+      - COW_SPAWN_EGG
+      - CREEPER_SPAWN_EGG
+      - DOLPHIN_SPAWN_EGG
+      - DONKEY_SPAWN_EGG
+      - DROWNED_SPAWN_EGG
+      - ELDER_GUARDIAN_SPAWN_EGG
+      - END_PORTAL_FRAME
+      - ENDERMAN_SPAWN_EGG
+      - ENDERMITE_SPAWN_EGG
+      - EVOKER_SPAWN_EGG
+      - FOX_SPAWN_EGG
+      - GHAST_SPAWN_EGG
+      - GLOW_SQUID_SPAWN_EGG
+      - GOAT_SPAWN_EGG
+      - GUARDIAN_SPAWN_EGG
+      - HOGLIN_SPAWN_EGG
+      - HORSE_SPAWN_EGG
+      - HUSK_SPAWN_EGG
+      - LAVA
+      - LLAMA_SPAWN_EGG
+      - MAGMA_CUBE_SPAWN_EGG
+      - MOOSHROOM_SPAWN_EGG
+      - MULE_SPAWN_EGG
+      - OCELOT_SPAWN_EGG
+      - PANDA_SPAWN_EGG
+      - PARROT_SPAWN_EGG
+      - PHANTOM_SPAWN_EGG
+      - PIG_SPAWN_EGG
+      - PIGLIN_BRUTE_SPAWN_EGG
+      - PIGLIN_SPAWN_EGG
+      - PILLAGER_SPAWN_EGG
+      - POLAR_BEAR_SPAWN_EGG
+      - PUFFERFISH_SPAWN_EGG
+      - RABBIT_SPAWN_EGG
+      - RAVAGER_SPAWN_EGG
+      - SALMON_SPAWN_EGG
+      - SHEEP_SPAWN_EGG
+      - SHULKER_SPAWN_EGG
+      - SILVERFISH_SPAWN_EGG
+      - SKELETON_HORSE_SPAWN_EGG
+      - SKELETON_SPAWN_EGG
+      - SLIME_SPAWN_EGG
+      - SPIDER_SPAWN_EGG
+      - SQUID_SPAWN_EGG
+      - STRAY_SPAWN_EGG
+      - STRIDER_SPAWN_EGG
+      - TNT
+      - TRADER_LLAMA_SPAWN_EGG
+      - TROPICAL_FISH_SPAWN_EGG
+      - TURTLE_SPAWN_EGG
+      - VEX_SPAWN_EGG
+      - VILLAGER_SPAWN_EGG
+      - VINDICATOR_SPAWN_EGG
+      - WANDERING_TRADER_SPAWN_EGG
+      - WITCH_SPAWN_EGG
+      - WITHER_SKELETON_SPAWN_EGG
+      - WOLF_SPAWN_EGG
+      - ZOGLIN_SPAWN_EGG
+      - ZOMBIE_HORSE_SPAWN_EGG
+      - ZOMBIE_SPAWN_EGG
+      - ZOMBIE_VILLAGER_SPAWN_EGG
+      - ZOMBIFIED_PIGLIN_SPAWN_EGG
+
+    # List of inventory types that players in Creative cannot open
+    restricted_container_types:
+      - CHEST
+      - TRAPPED_CHEST
+      - ENDER_CHEST
+      - FURNACE
+      - DISPENSER
+      - DROPPER
+      - HOPPER
+      - BREWING_STAND
+      - ENCHANTING_TABLE
+      - ANVIL
+      - BEACON
+      - SHULKER_BOX
+      - BARREL
+
+    # Commands players cannot run while in Creative mode (bypass permission excluded).
+    # Do not include the leading '/'. Only the base command/label is checked
+    # (e.g. "give" also blocks "/give" and "/minecraft:give", but not subcommands).
+    command_blacklist: []
+
+# Prevents item drops caused by gravity-affected blocks (e.g. anvils, sand, gravel,
+# concrete powder) landing/breaking. Applies server-wide, not just to Creative players.
+prevent_falling_block_drops: false
+
+# Messages
+messages:
+  # Master switch for all automatic in-game feedback messages (gamemode changed,
+  # inventory loaded/saved, and restriction "denied" messages). Turn this off if
+  # it gets too spammy - for example when item_pickup and item_drop restrictions
+  # are both enabled and players are constantly triggering denial messages.
+  # This does NOT affect direct command responses like /gmmanage status or reload.
+  enabled: true
+
+  no_permission: "&cYou don't have permission to use this feature!"
+  reloaded: "&aConfiguration reloaded!"
+  status_header: "&6GameModeManager Status"
+  status_auto_switch: "&7Auto world-switch: &a{enabled}"
+  status_world_mappings: "&7World mappings:"
+  status_restrictions: "&7Restrictions (creative):"
+  status_line: "  &7{action}: &a{state}"
+  inventory_loaded: "&aLoaded {gamemode} inventory for {player}"
+  inventory_saved: "&aSaved {gamemode} inventory for {player}"
+  gamemode_changed: "&aGamemode changed to {gamemode} for {player}"
+  container_access_denied: "&cYou cannot open containers in Creative mode!"
+  block_break_denied: "&cYou cannot break that block in Creative mode!"
+  item_drop_denied: "&cYou cannot drop items in Creative mode!"
+  item_pickup_denied: "&cYou cannot pick up items in Creative mode!"
+  command_blocked: "&cThat command is disabled in Creative mode!"

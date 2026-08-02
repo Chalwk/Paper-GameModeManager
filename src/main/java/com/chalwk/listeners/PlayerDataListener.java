@@ -27,5 +27,6 @@ public class PlayerDataListener implements Listener {
         Player player = event.getPlayer();
         plugin.getInventoryManager().savePlayer(player);
         plugin.getInventoryManager().removePlayerData(player.getUniqueId());
+        plugin.clearPendingGameMode(player.getUniqueId());
     }
 }

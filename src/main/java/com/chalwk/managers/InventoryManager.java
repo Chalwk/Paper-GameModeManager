@@ -3,7 +3,6 @@
 package com.chalwk.managers;
 
 import com.chalwk.GameModeManager;
-import com.chalwk.util.MessageHelper;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -108,9 +107,6 @@ public class InventoryManager {
     public void applyState(Player player, GameMode gm) {
         PlayerState state = getState(player, gm);
         state.applyToPlayer(player);
-        MessageHelper.sendGameMessage(plugin, player, plugin.getConfigManager().getConfig().getInventoryLoaded()
-                .replace("{gamemode}", gm.name())
-                .replace("{player}", player.getName()));
     }
 
 

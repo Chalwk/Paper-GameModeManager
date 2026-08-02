@@ -9,7 +9,7 @@ website: https://github.com/Chalwk
 commands:
   gmmanage:
     description: Manage GameModeManager settings
-    usage: /<command> [reload|status]
+    usage: /<command> [reload|help]
     permission: gmmanage.use
     aliases: [ gmm ]
 
@@ -19,7 +19,6 @@ permissions:
     children:
       gmmanage.use: true
       gmmanage.reload: true
-      gmmanage.bypass.restrictions: true
 
   gmmanage.use:
     description: Allows using the /gmmanage command
@@ -27,8 +26,4 @@ permissions:
 
   gmmanage.reload:
     description: Allows reloading the configuration
-    default: op
-
-  gmmanage.bypass.restrictions:
-    description: Bypass all action restrictions (block place, break, drop)
     default: op

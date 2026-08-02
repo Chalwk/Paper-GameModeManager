@@ -6,13 +6,19 @@ import com.chalwk.commands.GameModeCommand;
 import com.chalwk.config.ConfigManager;
 import com.chalwk.listeners.GameModeListener;
 import com.chalwk.listeners.PlayerDataListener;
-import com.chalwk.listeners.RestrictionListener;
 import com.chalwk.listeners.WorldSwitchListener;
 import com.chalwk.managers.InventoryManager;
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class GameModeManager extends JavaPlugin {
 
+    private final Map<UUID, GameMode> pendingWorldSwitchGameMode = new HashMap<>();
     private ConfigManager configManager;
     private InventoryManager inventoryManager;
 
@@ -27,7 +33,6 @@ public class GameModeManager extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new GameModeListener(this), this);
         getServer().getPluginManager().registerEvents(new WorldSwitchListener(this), this);
-        getServer().getPluginManager().registerEvents(new RestrictionListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerDataListener(this), this);
 
         getLogger().info("GameModeManager enabled! Inventories and player states are now gamemode-specific.");
@@ -52,5 +57,17 @@ public class GameModeManager extends JavaPlugin {
 
     public InventoryManager getInventoryManager() {
         return inventoryManager;
+    }
+
+    public void setPendingGameMode(Player player, GameMode gameMode) {
+        pendingWorldSwitchGameMode.put(player.getUniqueId(), gameMode);
+    }
+
+    public GameMode consumePendingGameMode(Player player) {
+        return pendingWorldSwitchGameMode.remove(player.getUniqueId());
+    }
+
+    public void clearPendingGameMode(UUID uuid) {
+        pendingWorldSwitchGameMode.remove(uuid);
     }
 }

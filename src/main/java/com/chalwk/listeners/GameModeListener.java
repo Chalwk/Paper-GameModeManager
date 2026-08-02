@@ -3,7 +3,6 @@
 package com.chalwk.listeners;
 
 import com.chalwk.GameModeManager;
-import com.chalwk.util.MessageHelper;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,10 +23,5 @@ public class GameModeListener implements Listener {
         GameMode newGm = event.getNewGameMode();
 
         plugin.getInventoryManager().switchGamemode(player, newGm);
-
-        String msg = plugin.getConfigManager().getConfig().getGamemodeChanged()
-                .replace("{gamemode}", newGm.name())
-                .replace("{player}", player.getName());
-        MessageHelper.sendGameMessage(plugin, player, msg);
     }
 }

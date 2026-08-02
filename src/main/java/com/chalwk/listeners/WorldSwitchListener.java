@@ -3,12 +3,14 @@
 package com.chalwk.listeners;
 
 import com.chalwk.GameModeManager;
-import com.chalwk.config.PluginConfig;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class WorldSwitchListener implements Listener {
     private final GameModeManager plugin;
@@ -17,21 +19,31 @@ public class WorldSwitchListener implements Listener {
         this.plugin = plugin;
     }
 
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        capturePendingGameMode(event);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerPortal(PlayerPortalEvent event) {
+        capturePendingGameMode(event);
+    }
+
+    private void capturePendingGameMode(PlayerTeleportEvent event) {
+        if (event.getTo() == null) return;
+        if (event.getFrom().getWorld() == event.getTo().getWorld()) return;
+
+        Player player = event.getPlayer();
+        plugin.setPendingGameMode(player, player.getGameMode());
+    }
+
     @EventHandler
     public void onWorldChange(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
-        PluginConfig config = plugin.getConfigManager().getConfig();
+        GameMode pending = plugin.consumePendingGameMode(player);
 
-        if (!config.isAutoSwitchWorlds()) {
-            return;
-        }
-
-        String worldName = player.getWorld().getName();
-        GameMode targetGm = config.getWorldGamemodes().get(worldName);
-        if (targetGm != null) {
-            if (player.getGameMode() != targetGm) {
-                player.setGameMode(targetGm);
-            }
+        if (pending != null && player.getGameMode() != pending) {
+            player.setGameMode(pending);
         }
     }
 }
